@@ -4,7 +4,7 @@ const wss = new WebSocket.Server({port});
 /**
  * @type {WebSocket.WebSocket[]}
  */
-var admins = [];
+var admins = []
 
 wss.on('connection', (ws) => {
     ws.on('message', (messageAsString) => {
