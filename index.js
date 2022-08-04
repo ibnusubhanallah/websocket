@@ -16,6 +16,7 @@ wss.on('connection', (ws) => {
          * }}
          */
         const message = JSON.parse(messageAsString);
+        print(message)
         if (message.pengirim.slice(0, 12)/* .slice(-8) */ == 'Admin Kantin') {
             admins.push(ws);
             ws.send({ tipe: "all order", data: pesanans })
