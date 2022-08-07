@@ -19,12 +19,12 @@ wss.on('connection', (ws) => {
         console.log(message)
         if (message.pengirim.slice(0, 12)/* .slice(-8) */ == 'Admin Kantin') {
             admins.push(ws);
-            ws.send(JSON.stringify({ tipe: "all order", data: pesanans }))
+            ws.send(JSON.stringify({ tipe: "all order", dataa: pesanans }))
             // return true; gatau ini bisa nge end 'on' apa engga
         } else {
             pesanans.push(message.pesanan)
             admins.forEach((a) => {
-                a.send(JSON.stringify({ tipe: "notif pesanan baru", data: message.pesanan }))
+                a.send(JSON.stringify({ tipe: "notif pesanan baru", dataa: message.pesanan }))
             })
         }
     })
