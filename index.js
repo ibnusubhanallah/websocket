@@ -28,7 +28,7 @@ wss.on('connection', (ws) => {
         } else {
             pesanans.push(message)
             admins.forEach((a) => {
-                a.send(JSON.stringify({ tipe: "notif pesanan baru", dataa: message }))
+                a.send(JSON.stringify({ tipe: "notif pesanan baru", dataa: [message] }))
             })
         }
     })
