@@ -9,6 +9,7 @@
   "author": "farhan",
   "license": "ISC",
   "dependencies": {
+    "whatsapp-web.js": "^1.17.1",
     "ws": "^8.5.0"
   }
 }
