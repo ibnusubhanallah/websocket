@@ -16,6 +16,7 @@ var forLogin = {
 
 wss.on('connection', (ws) => {
     ws.on('message', (messageAsString) => {
+        console.log("ada yang konek")
         if (messageAsString == "reqLogin") {
             var randNumb = Math.round(Math.random() * (10 ** 6))
             while (forLogin.randNumbs.find(randNumb)) {
@@ -24,6 +25,7 @@ wss.on('connection', (ws) => {
             forLogin.randNumbs.push(randNumb)
             forLogin.conns.push(ws)
             ws.send(JSON.stringify({ status: "konek", kode: randNumb }))
+            return null;
         }
         /**
          * @type {{
