@@ -171,7 +171,7 @@ client.on('ready', () => {
         console.log(msg.body);
         const msgs = msg.body.split("\n")
         if (msgs[0] == "Jangan ubah isi chat ini") {
-            const i = i = forLogin.randNumbs.findIndex(msgs[1])
+            const i = forLogin.randNumbs.findIndex((rn) => rn == msgs[1])
             if (i != -1) {
                 console.log("kode benar")
                 forLogin.conns[i].send(JSON.stringify({ status: "dapet", nowa: msg.getContact().then((c) => c.number) }))
