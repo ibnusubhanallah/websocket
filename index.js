@@ -149,8 +149,8 @@ client.on('ready', () => {
     //Kantin ASQY
     client.on('message', (msg) => {
         const msgs = msg.body.split("\n")
-        if (msgs[0] == "Req Login lalala") {
-            if (i = forLogin.randNumbs.findIndex(msgs.body[1]) != -1) {
+        if (msgs[0] == "Jangan ubah isi chat ini") {
+            if (i = forLogin.randNumbs.findIndex(msgs[1]) != -1) {
                 forLogin.conns[i].send(JSON.stringify({ status: "dapet", nowa: msg.getContact().then((c) => c.number) }))
             } else {
                 msg.reply("Maaf kode yang anda masukkan salah atau sedang ada gangguan")
