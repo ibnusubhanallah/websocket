@@ -20,7 +20,7 @@ wss.on('connection', (ws) => {
         if (messageAsString == "reqLogin") {
             var randNumb = Math.round(Math.random() * (10 ** 6))
             console.log("sepertinya sampe sini masih aman, cobe berapa.. "+randNumb)
-            while (forLogin.randNumbs.find(randNumb)) {
+            while (forLogin.randNumbs.find((rn) => rn == randNumb)) {
                 randNumb = Math.round(Math.random() * (10 ** 6))
             }
             forLogin.randNumbs.push(randNumb)
