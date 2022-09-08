@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WABOT MAIN</title>
+</head>
+
+<body>
+    WA State: <span id="wastate">...</span> <br>
+    Session: <textarea id="session" rows="1">...</textarea> <br>
+    QR Code: <br>
+    <img id="gmbr" /> <br>
+
+    <button onclick="update()">update</button> <span id="update"></span><br>
+    <button onclick="init()">initialize</button> <span id="init"></span><br>
+    <button onclick="logout()">logout</button> <span id="logout"></span><br>
+    <script>
+        function update() {
+            const func = 'update'
+            document.getElementById(func).innerText = 'wait...';
+            fetch("/"+func).then(response => response.json()).then((data) => {
+                document.getElementById(func).innerText = 'updated';
+                    setTimeout(() => {
+                        document.getElementById(func).innerText = '';
+                    }, 3000);
+                document.getElementById("gmbr").src = data.qrcode;
+                document.getElementById("gmbr").alt = data.qrcode;
+                document.getElementById("wastate").innerText = data.wastate;
+                document.getElementById("session").innerText = data.session;
+            })
+        }
+        function init() {
+            const func = 'init'
+            document.getElementById(func).innerText = 'wait...';
+            fetch("/"+func).then(response => response.text()).then((data) => {
+                if(data=="oke"){
+                    document.getElementById(func).innerText = 'initialized';
+                    setTimeout(() => {
+                        document.getElementById(func).innerText = '';
+                    }, 3000);
+                } else {
+                    document.getElementById(func).innerText = data;
+                }
+            })
+        }
+        function logout() {
+            const func = 'logout'
+            document.getElementById(func).innerText = 'wait...';
+            fetch("/"+func).then(response => response.text()).then((data) => {
+                if(data=="oke"){
+                    document.getElementById(func).innerText = 'logged out';
+                    setTimeout(() => {
+                        document.getElementById(func).innerText = '';
+                    }, 3000);
+                } else {
+                    document.getElementById(func).innerText = data;
+                }
+            })
+        }
+    </script>
+
+</body>
+
+</html>
