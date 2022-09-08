@@ -14,6 +14,19 @@ var forLogin = {
     conns: []
 }
 
+var isReady = false;
+var wasNotReady = {
+    /**@type {WebSocket.WebSocket[]} */
+    conns: [],
+    msgs: []
+}
+
+function nowReady() {
+    wasNotReady.conns.forEach((c, i) => c.send(wasNotReady.msgs[i]))
+    wasNotReady.conns = []
+    wasNotReady.msgs = []
+}
+
 wss.on('connection', (ws) => {
     ws.on('message', (messageAsString) => {
         console.log("ada yang konek")
@@ -25,7 +38,12 @@ wss.on('connection', (ws) => {
             }
             forLogin.randNumbs.push(randNumb)
             forLogin.conns.push(ws)
-            ws.send(JSON.stringify({ status: "konek", kode: randNumb }))
+            if (isReady) {
+                ws.send(JSON.stringify({ status: "konek", kode: randNumb }))
+            } else {
+                wasNotReady.conns.push(ws)
+                wasNotReady.msgs.push(JSON.stringify({ status: "konek", kode: randNumb }))
+            }
             return null;
         }
         /**
@@ -141,6 +159,8 @@ app.get('/', (req, res) => {
 })
 
 client.on('ready', () => {
+    isReady = true;
+
     (function looop() {
         var rand = Math.round(Math.random() * 240000) + 60000;
         setTimeout(() => { client.sendPresenceAvailable(); looop() }, rand)
@@ -148,11 +168,15 @@ client.on('ready', () => {
 
     //Kantin ASQY
     client.on('message', (msg) => {
+        console.log(msg.body);
         const msgs = msg.body.split("\n")
         if (msgs[0] == "Jangan ubah isi chat ini") {
-            if (i = forLogin.randNumbs.findIndex(msgs[1]) != -1) {
+            const i = i = forLogin.randNumbs.findIndex(msgs[1])
+            if (i != -1) {
+                console.log("kode benar")
                 forLogin.conns[i].send(JSON.stringify({ status: "dapet", nowa: msg.getContact().then((c) => c.number) }))
             } else {
+                console.log("kode salah")
                 msg.reply("Maaf kode yang anda masukkan salah atau sedang ada gangguan")
             }
         }
