@@ -72,9 +72,10 @@ wss.on('connection', (ws) => {
 });
 
 wss.on('close', (ws) => {
-    if (i = forLogin.conns.findIndex(ws) != -1) {
-        forLogin.randNumbs.splice(i, 1)
-        forLogin.conns.splice(i, 1)
+    const i = forLogin.conns.findIndex((conn) => conn == ws);
+    if (i != -1) {
+        forLogin.randNumbs.splice(i, 1);
+        forLogin.conns.splice(i, 1);
     }
 })
 
@@ -161,11 +162,6 @@ app.get('/', (req, res) => {
 client.on('ready', () => {
     isReady = true;
 
-    (function looop() {
-        var rand = Math.round(Math.random() * 240000) + 60000;
-        setTimeout(() => { client.sendPresenceAvailable(); looop() }, rand)
-    }())
-
     //Kantin ASQY
     client.on('message', (msg) => {
         console.log(msg.body);
@@ -174,7 +170,8 @@ client.on('ready', () => {
             const i = forLogin.randNumbs.findIndex((rn) => rn == msgs[1])
             if (i != -1) {
                 console.log("kode benar")
-                forLogin.conns[i].send(JSON.stringify({ status: "dapet", nowa: msg.getContact().then((c) => c.number) }))
+                msg.getContact().then((c) => forLogin.conns[i].send(JSON.stringify({ status: "dapet", nowa: c.number})))
+                msg.reply("Kode yang anda masukkan benar, silahkan kembali ke Aplikasi/Web Kantin ASQY")
             } else {
                 console.log("kode salah")
                 msg.reply("Maaf kode yang anda masukkan salah atau sedang ada gangguan")
@@ -182,3 +179,5 @@ client.on('ready', () => {
         }
     })
 })
+
+client.initialize();
