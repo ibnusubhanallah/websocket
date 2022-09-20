@@ -22,6 +22,7 @@ var wasNotReady = {
 }
 
 function nowReady() {
+    console.log("now ready");
     isReady = true;
     wasNotReady.conns.forEach((c, i) => c.send(wasNotReady.msgs[i]))
     wasNotReady.conns = []
@@ -37,15 +38,15 @@ wss.on('connection', (ws) => {
             while (forLogin.randNumbs.find((rn) => rn == randNumb)) {
                 randNumb = Math.round(Math.random() * (10 ** 6))
             }
-            forLogin.randNumbs.push(randNumb)
-            forLogin.conns.push(ws)
+            forLogin.randNumbs.push(randNumb);
+            forLogin.conns.push(ws);
             if (isReady) {
                 ws.send(JSON.stringify({ status: "konek", kode: randNumb }))
             } else {
                 wasNotReady.conns.push(ws)
                 wasNotReady.msgs.push(JSON.stringify({ status: "konek", kode: randNumb }))
             }
-            return null;
+            return;
         }
         /**
          * @type {{
@@ -183,10 +184,12 @@ client.on('ready', () => {
             const i = forLogin.randNumbs.findIndex((rn) => rn == msgs[1])
             if (i != -1) {
                 console.log("kode benar")
-                msg.getContact().then((c) => forLogin.conns[i].send(JSON.stringify({ status: "dapet", nowa: c.number })))
-                forLogin.randNumbs.splice(i, 1);
-                forLogin.conns.splice(i, 1);
-                msg.reply("Kode yang anda masukkan benar, silahkan kembali ke Aplikasi/Web Kantin ASQY")
+                msg.getContact().then((c) => {
+                    forLogin.conns[i].send(JSON.stringify({ status: "dapet", nowa: c.number }))
+                    forLogin.randNumbs.splice(i, 1);
+                    forLogin.conns.splice(i, 1);
+                    msg.reply("Kode yang anda masukkan benar, silahkan kembali ke Aplikasi/Web Kantin ASQY")
+                })
             } else {
                 console.log("kode salah")
                 msg.reply("Maaf kode yang anda masukkan salah atau sedang ada gangguan")

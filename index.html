@@ -21,7 +21,7 @@
         function update() {
             const func = 'update'
             document.getElementById(func).innerText = 'wait...';
-            fetch("/"+func).then(response => response.json()).then((data) => {
+            fetch("/admin_whatsapp/"+func).then(response => response.json()).then((data) => {
                 document.getElementById(func).innerText = 'updated';
                     setTimeout(() => {
                         document.getElementById(func).innerText = '';
@@ -35,7 +35,7 @@
         function init() {
             const func = 'init'
             document.getElementById(func).innerText = 'wait...';
-            fetch("/"+func).then(response => response.text()).then((data) => {
+            fetch("/admin_whatsapp/"+func).then(response => response.text()).then((data) => {
                 if(data=="oke"){
                     document.getElementById(func).innerText = 'initialized';
                     setTimeout(() => {
@@ -49,7 +49,7 @@
         function logout() {
             const func = 'logout'
             document.getElementById(func).innerText = 'wait...';
-            fetch("/"+func).then(response => response.text()).then((data) => {
+            fetch("/admin_whatsapp/"+func).then(response => response.text()).then((data) => {
                 if(data=="oke"){
                     document.getElementById(func).innerText = 'logged out';
                     setTimeout(() => {
