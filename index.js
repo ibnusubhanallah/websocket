@@ -96,6 +96,18 @@ const pool = mysql.createPool({
     database: "kantinasqy"
 })
 
+app.get('/anak', (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+        conn.query(`SELECT nama_anak, kelas FROM anak WHERE nomor_wa = ${req.query}`,
+            (err, q_res, field) => {
+                if (err) return console.error(err.message);
+                res.json([q_res]);
+                conn.release();
+            });
+    });
+})
+
 var QRCode = require('qrcode');
 const wwebjs = require('whatsapp-web.js');
 
@@ -115,12 +127,12 @@ client.on('disconnected', () => {
     console.log("disconnected");
 })
 
-app.get('/init/', (req, res) => {
+app.get('/admin_whatsapp/init', (req, res) => {
     client.initialize();
     res.send("oke")
 })
 
-app.get('/logout/', (req, res) => {
+app.get('/admin_whatsapp/logout', (req, res) => {
     client.logout().then(
         (done) => {
             res.send("oke");
@@ -131,7 +143,7 @@ app.get('/logout/', (req, res) => {
     )
 })
 
-app.get('/update/', (req, res) => {
+app.get('/admin_whatsapp/update', (req, res) => {
     var wstate = "";
     try {
         client.getState().then((ws) => {
@@ -171,7 +183,7 @@ client.on('ready', () => {
             const i = forLogin.randNumbs.findIndex((rn) => rn == msgs[1])
             if (i != -1) {
                 console.log("kode benar")
-                msg.getContact().then((c) => forLogin.conns[i].send(JSON.stringify({ status: "dapet", nowa: c.number})))
+                msg.getContact().then((c) => forLogin.conns[i].send(JSON.stringify({ status: "dapet", nowa: c.number })))
                 forLogin.randNumbs.splice(i, 1);
                 forLogin.conns.splice(i, 1);
                 msg.reply("Kode yang anda masukkan benar, silahkan kembali ke Aplikasi/Web Kantin ASQY")
