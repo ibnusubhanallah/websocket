@@ -100,7 +100,7 @@ const pool = mysql.createPool({
 app.get('/anak', (req, res) => {
     pool.getConnection((err, conn) => {
         if (err) throw err;
-        conn.query(`SELECT nama_anak, kelas FROM anak WHERE nomor_wa = ${req.query}`,
+        conn.query(`SELECT nama, kelas FROM anak WHERE nomor_wa = ${req.query.nowa}`,
             (err, q_res, field) => {
                 if (err) return console.error(err.message);
                 res.json([q_res]);
