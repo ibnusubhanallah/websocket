@@ -93,7 +93,7 @@ const port = 8081;
 const pool = mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "MysqlVPS2309!",
     database: "kantinasqy"
 })
 
